@@ -1,0 +1,158 @@
+/**
+ * MarqueeFlow - Marquee Animation Styles
+ *
+ * CSS-only marquee using smooth translate animation.
+ * Animation powered by transform: translateX() for GPU acceleration.
+ * Gap uses --marqueeflow-gap custom property so keyframes stay in sync.
+ */
+
+/* Container - clips overflow and sets dimensions */
+.marqueeflow {
+	--marqueeflow-gap: 3rem;
+	--marqueeflow-start-multiplier: 0;
+	display: flex;
+	overflow-x: clip;
+	position: relative;
+	gap: var(--marqueeflow-gap);
+}
+
+/* Item set - animated marquee items (direct children of container) */
+.marqueeflow__set {
+	display: flex;
+	gap: var(--marqueeflow-gap);
+	flex-shrink: 0;
+	align-items: center;
+	animation: marqueeflow-slide 30s linear infinite;
+	will-change: transform;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* Individual items within the set */
+.marqueeflow__item {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	height: var(--marqueeflow-height, 60px);
+}
+
+.marqueeflow__item img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+/* Marquee animation — single keyframe using custom properties */
+@keyframes marqueeflow-slide {
+	0% {
+		transform: translateX(calc(var(--marqueeflow-start-multiplier, 0) * (100% + var(--marqueeflow-gap))));
+	}
+	100% {
+		transform: translateX(calc(-1 * (100% + var(--marqueeflow-gap))));
+	}
+}
+
+/* Speed variations — duration scales with image count for consistent perceived speed */
+.marqueeflow--slow .marqueeflow__set {
+	animation-duration: calc(var(--marqueeflow-total-images, 6) * 10s);
+}
+
+.marqueeflow--normal .marqueeflow__set {
+	animation-duration: calc(var(--marqueeflow-total-images, 6) * 6s);
+}
+
+.marqueeflow--fast .marqueeflow__set {
+	animation-duration: calc(var(--marqueeflow-total-images, 6) * 3s);
+}
+
+/* Image height variations — set via --marqueeflow-height CSS variable on wrapper */
+.marqueeflow--height-small  { --marqueeflow-height: 40px; }
+.marqueeflow--height-medium { --marqueeflow-height: 60px; }
+.marqueeflow--height-large  { --marqueeflow-height: 80px; }
+
+/* Custom height set via --marqueeflow-height inline style on wrapper */
+
+/* Gap variations — just update the custom property */
+.marqueeflow--gap-normal {
+	--marqueeflow-gap: 3rem;
+}
+
+.marqueeflow--gap-spacious {
+	--marqueeflow-gap: 5rem;
+}
+
+/* Direction - Right to Left: pre-shift all sets 2 positions left so Set 3 starts visible */
+.marqueeflow--rtl {
+	--marqueeflow-start-multiplier: -2;
+}
+
+/* Pause animation on hover - only when enabled */
+.marqueeflow--pause-hover:hover .marqueeflow__set {
+	animation-play-state: paused;
+}
+
+/* Max width — controls how wide a single logo can grow (all ratio-based to avoid letterboxing) */
+.marqueeflow--max-width-normal .marqueeflow__item img {
+	max-width: calc(var(--marqueeflow-height, 60px) * 4);
+}
+
+.marqueeflow--max-width-narrow .marqueeflow__item img {
+	max-width: calc(var(--marqueeflow-height, 60px) * 3);
+}
+
+.marqueeflow--max-width-medium .marqueeflow__item img {
+	max-width: calc(var(--marqueeflow-height, 60px) * 5);
+}
+
+.marqueeflow--max-width-wide .marqueeflow__item img {
+	max-width: calc(var(--marqueeflow-height, 60px) * 6);
+}
+
+.marqueeflow--max-width-none .marqueeflow__item img {
+	max-width: none;
+}
+
+/* Accessibility - respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	.marqueeflow__set {
+		animation: none;
+	}
+
+	/* Hide duplicate sets — they only exist for seamless looping */
+	.marqueeflow__set[aria-hidden="true"] {
+		display: none;
+	}
+
+	.marqueeflow {
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+	}
+
+	.marqueeflow__item {
+		scroll-snap-align: start;
+	}
+}
+
+/* Responsive adjustments — just update the custom property, keyframes follow automatically */
+@media (max-width: 768px) {
+	.marqueeflow--gap-normal {
+		--marqueeflow-gap: 2rem;
+	}
+
+	.marqueeflow--gap-spacious {
+		--marqueeflow-gap: 4rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.marqueeflow--gap-normal {
+		--marqueeflow-gap: 1.5rem;
+	}
+
+	.marqueeflow--gap-spacious {
+		--marqueeflow-gap: 3rem;
+	}
+}

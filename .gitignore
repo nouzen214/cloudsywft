@@ -1,0 +1,22 @@
+# Ignore LocalWP environment settings and logs
+/conf/
+/logs/
+
+# Ignore WordPress core files
+/app/public/wp-admin/
+/app/public/wp-includes/
+/app/public/wp-*.php
+/app/public/index.php
+/app/public/xmlrpc.php
+/app/public/readme.html
+/app/public/license.txt
+
+# Ignore heavy media uploads and local database dumps
+/app/public/wp-content/uploads/
+/app/sql/
+
+# Allow your custom theme and plugins code
+!/app/public/wp-content/plugins/
+!/app/public/wp-content/themes/
+/app/public/wp-content/ai1wm-backups/
+

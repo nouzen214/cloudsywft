@@ -1,0 +1,1 @@
+.rt-carousel-progress{background-color:var(--rt-carousel-progress-bg-color,#ddd);height:4px;margin-top:10px;overflow:hidden;position:relative;width:100%}.rt-carousel-progress__bar{background-color:var(--rt-carousel-progress-color,#1c1c1c);height:100%;right:-100%;position:absolute;top:0;transition:transform .4s ease-out;width:100%}
